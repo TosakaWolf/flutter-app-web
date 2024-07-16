@@ -1,125 +1,155 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart'; // For rootBundle
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:logger/logger.dart';
+import 'proxy.dart';
+// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-void main() {
+const platform = MethodChannel('webReadyChannel');
+
+const webDistDir = "dist";
+
+var logger = Logger();
+// 前端已代理
+var init = false;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(
+      widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
+  // 设置全屏
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  // 不申请权限也可以启动
+  await requestPermissions();
+  final appRoot = await getApplicationDocumentsDirectory();
+  // 前端路径默认dist
+  final appDir = Directory('${appRoot.path}/$webDistDir');
+  await copyAssetsToLocal(webDistDir, appDir);
+  startWebServer(appDir);
+  FlutterNativeSplash.remove();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return const MaterialApp(
+      home: WebViewExample(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class WebViewExample extends StatefulWidget {
+  const WebViewExample({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  WebViewExampleState createState() => WebViewExampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class WebViewExampleState extends State<WebViewExample> {
+  late WebViewController _controller;
 
   @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      // ..addJavaScriptChannel(
+      //   'Flutter',
+      //   onMessageReceived: (message) async {
+      //     // Handle JavaScript messages here
+      //   },
+      // )
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) async {
+            if (progress == 100) {
+              if (!init) {
+                init = true;
+                logger.i("send serverStarted to java");
+                await platform.invokeMethod('serverStarted');
+              }
+            }
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      )
+      ..loadRequest(Uri.parse('about:blank'));
   }
+
+  Future<bool> _onWillPop() async {
+    // if (await _controller.canGoBack()) {
+    //   _controller.goBack();
+    // }
+    sysBack();
+    return Future.value(false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          body: WebViewWidget(controller: _controller),
+        ));
+  }
+
+  Future<void> sysBack() async {
+    await platform.invokeMethod('sysBack');
+    //当前页面不是业务界面导致无法执行
+    // _controller.runJavaScript("javascript:window.sysBack();");
+  }
+//
+// InAppWebViewController? webViewController;
+//
+// @override
+// Widget build(BuildContext context) {
+//   return Scaffold(
+//     // appBar: AppBar(title: Text("WebView Example")),
+//     body: Container(
+//       // padding: EdgeInsets.all(8.0),
+//       child: Column(
+//         children: [
+//           Expanded(
+//             child: InAppWebView(
+//               initialUrlRequest: URLRequest(url: WebUri('about:blank')),
+//               initialSettings: InAppWebViewSettings(
+//                 useOnDownloadStart: true,
+//                 javaScriptEnabled: true,
+//                 cacheEnabled: true,
+//                 supportZoom: true,
+//                 useHybridComposition: true,
+//                 builtInZoomControls: true,
+//                 displayZoomControls: false,
+//                 allowsInlineMediaPlayback: true,
+//               ),
+//               onWebViewCreated: (controller) {
+//                 webViewController = controller;
+//               },
+//               // onLoadStart: (controller, url) {
+//               //   print("Started $url");
+//               // },
+//               // onLoadStop: (controller, url) async {
+//               //   print("Stopped $url");
+//               // },
+//               onProgressChanged: (controller, progress) async {
+//                 if (progress == 100) {
+//                   if (count == 0) {
+//                     count++;
+//                     logger.i("send serverStarted to java");
+//                     await platform.invokeMethod('serverStarted');
+//                   }
+//                 }
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+// }
 }
