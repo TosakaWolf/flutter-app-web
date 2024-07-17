@@ -30,7 +30,7 @@ const helloWorld = () => {
       <v-btn variant="outlined" @click="count++">count is {{ count }}</v-btn>
     </v-row>
     <v-row justify="center" class="mb-2">
-      <v-btn variant="outlined" @click="showToastBottom">showToastBottom</v-btn>
+      <v-btn variant="outlined" @click="showToastBottom">show Android toast</v-btn>
     </v-row>
     <v-row justify="center" class="mb-2">
       <v-btn variant="outlined" @click="helloWorld">helloWorld</v-btn>
