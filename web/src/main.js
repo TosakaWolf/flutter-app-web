@@ -6,7 +6,7 @@ const app = createApp(App)
 import './style.css'
 import '@nutui/nutui/dist/style.css'
 
-import router from './router/index'
+import router from './router'
 import { vuetify } from './plugins/vuetify'
 
 app.use(router)
