@@ -3,4 +3,4 @@
   (window as any).sysBack = function() {
     (window as any).globalRouter.go(-1)
   }
-})
+})()

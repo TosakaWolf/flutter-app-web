@@ -9,13 +9,14 @@ import '@nutui/nutui/dist/style.css'
 import router from './router'
 import { vuetify } from './plugins/vuetify'
 
-app.use(router)
-app.use(vuetify)
-app.use(createPinia())
-app.mount('#app')
-
 window.globalRouter = router
 import '@/android/androidCall'
 if (import.meta.env.DEV) {
   import('@/android/androidMock')
 }
+
+app.use(router)
+app.use(vuetify)
+app.use(createPinia())
+app.mount('#app')
+
