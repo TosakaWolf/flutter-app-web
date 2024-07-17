@@ -1,5 +1,9 @@
 # Flutter-App-Web
 
+---
+[English](README_EN.md)
+---
+
 ## 概述
 
 使用 Vue 3 开发 Flutter 界面，通过 Flutter WebView 离线嵌入 Vue 3 前端，实现 Flutter 嵌入前端 Vue 3，界面完全由 Vue 3 前端开发。
