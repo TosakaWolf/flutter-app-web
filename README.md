@@ -16,9 +16,9 @@
 
 - 前端目录：[web](web)
 - 前端打包路径：[dist](dist)
-- 前端调用后端 API：[androidApi.js](web/src/android/androidApi.js)
-- 前端调用后端工具：[androidRequest.js](web/src/utils/androidRequest.js)
-- 前端接收后端调用：[androidCall.js](web/src/android/androidCall.js)
+- 前端调用安卓 API：[androidApi.js](web/src/android/androidApi.js)
+- 前端调用安卓工具：[androidRequest.js](web/src/utils/androidRequest.js)
+- 前端接收安卓调用：[androidCall.js](web/src/android/androidCall.js)
 - 开发环境模拟调用：[androidMock.js](web/src/android/androidMock.js)
 
 ## 编译前端
@@ -29,12 +29,11 @@
 vite build --emptyOutDir
 ```
 
-## 后端接口
+## 接口
 
-[WebAppInterface.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2FWebAppInterface.java)
+在[WebAppInterface.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2FWebAppInterface.java)中编写安卓接口
 
-接口编写方式
-默认需要回调的接口，callbackName作为第一个参数不要调换位置。后面为接口入参，可不传
+前端调用安卓，需要安卓回调的接口，callbackName作为第一个参数不要调换位置。后面为接口入参，可不传
 
 ```java
     @JavascriptInterface
@@ -45,3 +44,15 @@ vite build --emptyOutDir
         });
     }
 ```
+
+前端调用安卓，不需要安卓回调的接口，不需要callbackName。并且在前端可以直接window.Android.xxxx调用
+
+```java
+    @JavascriptInterface
+    public void exampleMethodNoCallback(String param) {
+        //...逻辑
+    }
+```
+安卓调用前端，发送文本消息。使用[AndroidReplyUtil.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2Futils%2FAndroidReplyUtil.java).sendMessageToJs
+安卓调用前端，发送json对象。使用[AndroidReplyUtil.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2Futils%2FAndroidReplyUtil.java).sendObjectToJs
+仅作参考，有更好的写法。
