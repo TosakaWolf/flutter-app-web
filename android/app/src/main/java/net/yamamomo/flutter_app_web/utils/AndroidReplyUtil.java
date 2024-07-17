@@ -22,4 +22,26 @@ public class AndroidReplyUtil {
             }
         });
     }
+
+
+    public static void sendMessageToJs(Handler mainHandler, WebView webView, final String jsFunction, String message) {
+        mainHandler.post(() -> {
+            if (webView != null) {
+                String jsCode = "javascript:window." + jsFunction + "('" + message + "')";
+                webView.evaluateJavascript(jsCode, null);
+            }
+        });
+    }
+
+    public static <T> void sendObjectToJs(Handler mainHandler, WebView webView, final String jsFunction, T object) {
+        mainHandler.post(() -> {
+            if (webView != null) {
+                Gson gson = new Gson();
+                String jsonResult = gson.toJson(object);
+                String escapedJsonResult = JSONObject.quote(jsonResult);
+                String jsCode = "javascript:window." + jsFunction + "(" + escapedJsonResult + ")";
+                webView.evaluateJavascript(jsCode, null);
+            }
+        });
+    }
 }
