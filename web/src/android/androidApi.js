@@ -1,7 +1,7 @@
 import { callAndroidMethod } from '@/utils/androidRequest'
 
 export function showToastBottom(msg) {
-  window.showToastBottom(msg)
+  window.Android.showToastBottom(msg)
 }
 
 export function helloWorld(...args) {

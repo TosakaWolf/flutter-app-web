@@ -1,3 +1,5 @@
+import { showNotify } from '@nutui/nutui'
+
 // 公共返回对象
 function createResponse(data, message) {
   return '{ \"code\": 200, \"data\": \"' + data + '\", \"message\":\"' + (message || '操作成功') + '\" }'
@@ -10,7 +12,7 @@ function createResponse(data, message) {
 
         // debug
         showToastBottom: function(msg) {
-          console.log('提了个示:' + msg)
+          showNotify.success('debug: 提了个示:' + msg)
         },
         helloWorld: function(func, ...args) {
           window[func](createResponse(true, 'debug : hello world 收到参数' + args.join('、')))

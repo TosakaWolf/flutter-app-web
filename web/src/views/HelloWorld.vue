@@ -1,6 +1,17 @@
 <script setup>
+import * as androidApi from '@/android/androidApi'
 import { ref } from 'vue'
+import { showNotify } from '@nutui/nutui'
+
 const count = ref(0)
+const showToastBottom = () => {
+  androidApi.showToastBottom('showToastBottom')
+}
+const helloWorld = () => {
+  androidApi.helloWorld('hello world', 'hello Ben', 'hello Emma').then(res => {
+    showNotify.success(res.message)
+  })
+}
 </script>
 
 <template>
@@ -15,11 +26,22 @@ const count = ref(0)
   <h1>Vite + Vue</h1>
 
   <div class="card">
-    <v-btn variant="outlined"  @click="count++">count is {{ count }}</v-btn>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
+    <v-row justify="center" class="mb-2">
+      <v-btn variant="outlined" @click="count++">count is {{ count }}</v-btn>
+    </v-row>
+    <v-row justify="center" class="mb-2">
+      <v-btn variant="outlined" @click="showToastBottom">showToastBottom</v-btn>
+    </v-row>
+    <v-row justify="center" class="mb-2">
+      <v-btn variant="outlined" @click="helloWorld">helloWorld</v-btn>
+    </v-row>
+    <v-row justify="center" class="mb-2">
+      <p>
+        Edit
+        <code>views/HelloWorld.vue</code> to test HMR
+      </p>
+    </v-row>
+
   </div>
 
   <p>
@@ -43,15 +65,18 @@ const count = ref(0)
 .read-the-docs {
   color: #888;
 }
+
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }

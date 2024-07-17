@@ -8,11 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nutui/nutui": "^4.3.11",
     "pinia": "^2.1.7",
-    "bulma": "^1.0.1",
     "vue": "^3.4.29",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.4.10"
+    "vuetify": "^3.6.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
@@ -22,7 +22,7 @@
     "@vue/cli-plugin-eslint": "~5.0.8",
     "eslint": "^8.55.0",
     "eslint-plugin-vue": "^9.19.2",
-    "vite-plugin-vuetify": "^2.0.1",
+    "vite-plugin-vuetify": "^2.0.3",
     "sass": "^1.77.8",
     "sass-loader": "^14.2.1"
   }
