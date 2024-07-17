@@ -40,7 +40,9 @@ vite build --emptyOutDir
     public void exampleMethod(final String callbackName, String param) {
         executorService.execute(() -> {
             //.... 逻辑
-            AndroidReplyUtil.postApiResult(mainHandler, webView, callbackName, ApiResult.success("响应数据", "响应消息"));
+            AndroidReplyUtil.postApiResult(
+                    mainHandler, webView, callbackName, 
+                    ApiResult.success("响应数据", "响应消息"));
         });
     }
 ```
@@ -54,5 +56,7 @@ vite build --emptyOutDir
     }
 ```
 安卓调用前端，发送文本消息。使用[AndroidReplyUtil.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2Futils%2FAndroidReplyUtil.java).sendMessageToJs
+
 安卓调用前端，发送json对象。使用[AndroidReplyUtil.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2Futils%2FAndroidReplyUtil.java).sendObjectToJs
+
 仅作参考，有更好的写法。
