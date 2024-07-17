@@ -27,3 +27,21 @@
 
 ```sh
 vite build --emptyOutDir
+```
+
+## 后端接口
+
+[WebAppInterface.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2FWebAppInterface.java)
+
+接口编写方式
+默认需要回调的接口，callbackName作为第一个参数不要调换位置。后面为接口入参，可不传
+
+```java
+    @JavascriptInterface
+    public void exampleMethod(final String callbackName, String param) {
+        executorService.execute(() -> {
+            //.... 逻辑
+            AndroidReplyUtil.postApiResult(mainHandler, webView, callbackName, ApiResult.success("响应数据", "响应消息"));
+        });
+    }
+```
