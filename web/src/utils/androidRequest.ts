@@ -43,7 +43,7 @@ export function callAndroidMethod(methodName: string, ...args: any[]): Promise<T
       timeoutId = window.setTimeout(() => {
         delete (window as any)[callbackName]
         reject(`调用 ${methodName} 方法超时.`) // 超时，返回错误信息
-      }, 5000) // 超时时间设为 5000 毫秒（5 秒）
+      }, 20000) // 超时时间设为 20000 毫秒（20 秒）
     } else {
       reject(`Android接口${methodName}不可用.`) // 方法不可用，返回错误信息
     }
