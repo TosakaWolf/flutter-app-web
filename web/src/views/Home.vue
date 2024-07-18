@@ -25,9 +25,17 @@ function onClick() {
 
       <v-main>
         <v-container>
-          <v-btn variant="tonal" @click="router.push('/helloworld')">
-            Hello World
-          </v-btn>
+          <v-row justify="center" class="mb-2">
+            <v-btn variant="tonal" @click="router.push('/helloworld')">
+              Hello World
+            </v-btn>
+          </v-row>
+          <v-row justify="center" class="mb-2">
+            <v-btn variant="tonal">
+              Other
+            </v-btn>
+          </v-row>
+
         </v-container>
       </v-main>
     </v-app>
