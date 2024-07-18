@@ -10,16 +10,16 @@
 
 ## 功能
 
-- 使用 Vue 3 开发 Flutter 界面。
+- 使用 Vue 3 开发 Flutter 界面
 
 ## 开发目录结构
 
-- 前端目录：[web](web)
-- 前端打包路径：[dist](dist)
-- 前端调用安卓 API：[androidApi.js](web/src/android/androidApi.js)
-- 前端调用安卓工具：[androidRequest.js](web/src/utils/androidRequest.js)
-- 前端接收安卓调用：[androidCall.js](web/src/android/androidCall.js)
-- 开发环境模拟调用：[androidMock.js](web/src/android/androidMock.js)
+- **前端目录**: [web](web)
+- **前端打包路径**: [dist](dist)
+- **前端调用安卓 API**: [androidApi.ts](web/src/android/androidApi.ts)
+- **前端调用安卓工具**: [androidRequest.ts](web/src/utils/androidRequest.ts)
+- **前端接收安卓调用**: [androidCall.ts](web/src/android/androidCall.ts)
+- **开发环境模拟调用**: [androidMock.ts](web/src/android/androidMock.ts)
 
 ## 编译前端
 
