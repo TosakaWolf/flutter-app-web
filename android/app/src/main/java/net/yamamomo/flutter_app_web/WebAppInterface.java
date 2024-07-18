@@ -38,7 +38,7 @@ public class WebAppInterface {
     @JavascriptInterface
     public void helloWorld(final String callbackName, String... args) {
         executorService.execute(() -> {
-            AndroidReplyUtil.postApiResult(mainHandler, webView, callbackName, ApiResult.success(true, "hello world 收到参数" + Arrays.toString(args)));
+            AndroidReplyUtil.postApiResult(mainHandler, webView, callbackName, ApiResult.success(true, "收到参数" + Arrays.toString(args)));
         });
     }
 

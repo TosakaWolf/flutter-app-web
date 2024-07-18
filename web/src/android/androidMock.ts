@@ -15,7 +15,7 @@ function createResponse(data: any, message?: string): string {
           showNotify.success('debug: 提了个示:' + msg)
         },
         helloWorld: function(func: string, ...args: any[]): void {
-          (window as any)[func](createResponse(true, 'debug: hello world 收到参数' + args.join('、')))
+          (window as any)[func](createResponse(true, 'debug: 收到参数' + args.join('、')))
         }
       }
     }
