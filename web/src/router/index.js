@@ -3,14 +3,20 @@ import { createRouter, createWebHistory } from 'vue-router'
 export const constantRoutes = [
   {
     path: '/',
-    redirect: '/helloworld'
+    redirect: '/home'
+  },
+  {
+    path: '/home',
+    name: 'home',
+    meta: { title: 'home' },
+    component: () => import('@/views/Home.vue')
   },
   {
     path: '/helloworld',
     name: 'helloworld',
     meta: { title: 'hello world' },
     component: () => import('@/views/HelloWorld.vue')
-  },
+  }
   // {
   //   path: '/:pathMatch(.*)*',
   //   name: '404',
@@ -31,6 +37,5 @@ const createNewRouter = () =>
     routes: constantRoutes
   })
 const router = createNewRouter()
-
 
 export default router
