@@ -1,5 +1,5 @@
 import { callAndroidMethod } from '../utils/androidRequest'
-import { DefaultApiResult } from './defaultApiResult'
+import { DefaultApiResult } from './apiInferfaces'
 
 export function showToastBottom(msg: string): void {
   (window as any).Android.showToastBottom(msg)
