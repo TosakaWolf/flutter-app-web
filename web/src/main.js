@@ -11,8 +11,9 @@ import { vuetify } from './plugins/vuetify'
 
 window.globalRouter = router
 import '@/android/androidCall'
+import { mockAndroid } from '@/android/androidMock'
 if (import.meta.env.DEV) {
-  import('@/android/androidMock')
+  await mockAndroid()
 }
 
 app.use(router)

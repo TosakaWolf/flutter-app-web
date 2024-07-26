@@ -1,13 +1,17 @@
 import { showNotify } from '@nutui/nutui'
 
 // 公共返回对象
-function createResponse(data: any, message?: string): string {
-  return `{ "code": 200, "data": "${data}", "message": "${message || '操作成功'}" }`
+function createResponse(data: any, message: string) {
+  return JSON.stringify({
+    code: 200,
+    data: data,
+    message: message || '操作成功'
+  })
 }
 
-(function() {
+export async function mockAndroid() {
   if (process.env.NODE_ENV === 'development') {
-    if (!(window as any).Android) {
+    if (typeof window !== 'undefined' && !(window as any).Android) {
       (window as any).Android = {
 
         // debug
@@ -20,4 +24,4 @@ function createResponse(data: any, message?: string): string {
       }
     }
   }
-})()
+}
