@@ -8,9 +8,6 @@
 
 使用 Vue 3 开发 Flutter 界面，通过 Flutter WebView 离线嵌入 Vue 3 前端，实现 Flutter 嵌入前端 Vue 3，界面完全由 Vue 3 前端开发。
 
-## 功能
-
-- 使用 Vue 3 开发 Flutter 界面
 
 ## 开发目录结构
 
@@ -29,7 +26,14 @@
 vite build --emptyOutDir
 ```
 
-## 接口
+## 开发
+
+使用 Android Studio/开发工具 打开[android](android)目录进行安卓开发
+
+使用 前端开发工具 打开[web](web)目录进行前端开发
+
+
+## 接口调用
 
 在[WebAppInterface.java](android%2Fapp%2Fsrc%2Fmain%2Fjava%2Fnet%2Fyamamomo%2Fflutter_app_web%2FWebAppInterface.java)中编写安卓接口
 
@@ -47,7 +51,7 @@ vite build --emptyOutDir
     }
 ```
 
-前端调用安卓，不需要安卓回调的接口，不需要callbackName。并且在前端可以直接window.Android.xxxx调用
+前端调用安卓，不需要安卓回调的接口，则不需要callbackName。并且在前端可以直接window.Android.xxxx调用
 
 ```java
     @JavascriptInterface

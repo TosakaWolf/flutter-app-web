@@ -6,11 +6,12 @@
 
 ## Overview
 
-Develop Flutter interfaces using Vue 3 and embed the Vue 3 frontend offline in Flutter WebView, achieving a fully Vue 3-based frontend within Flutter.
+This project uses Vue 3 to develop the Flutter user interface. The Vue 3 front-end is embedded offline into Flutter via Flutter WebView, meaning the entire UI is built using Vue 3.
 
-## Features
+## Development
+For Android development, open the android directory in Android Studio or your preferred Android development tool.
 
-- Develop Flutter UI using Vue 3.
+For frontend development, open the web directory in your chosen frontend development environment.
 
 ## Development Directory Structure
 
